@@ -5,6 +5,14 @@ function main() {
   const renderer = new THREE.WebGLRenderer({antialias: true, canvas})
   const scene = new THREE.Scene() // 场景
 
+  // 光照效果
+  // const color = 0xffffff
+  // const intensity = 3
+  // const light = new THREE.DirectionalLight(color, intensity)
+  // light.position.set(-1, 2, 4)
+  // scene.add(light)
+
+
   const boxWidth = 1
   const boxHeight = 1
   const boxDepth = 1
@@ -12,25 +20,15 @@ function main() {
   const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth)
 
   const loader = new THREE.TextureLoader()
+  const texture = loader.load('https://threejs.org/manual/examples/resources/images/wall.jpg')
+  texture.colorSpace = THREE.SRGBColorSpace
 
-  // 基本材质并设置图片
-  const materials = [
-    new THREE.MeshBasicMaterial({map: loaderColorTexture('../assets/imgs/flower-1.jpg')}),
-    new THREE.MeshBasicMaterial({map: loaderColorTexture('../assets/imgs/flower-2.jpg')}),
-    new THREE.MeshBasicMaterial({map: loaderColorTexture('../assets/imgs/flower-3.jpg')}),
-    new THREE.MeshBasicMaterial({map: loaderColorTexture('../assets/imgs/flower-4.jpg')}),
-    new THREE.MeshBasicMaterial({map: loaderColorTexture('../assets/imgs/flower-5.jpg')}),
-    new THREE.MeshBasicMaterial({map: loaderColorTexture('../assets/imgs/flower-6.jpg')})
-  ]
-
-  function loaderColorTexture(path) {
-    const texture = loader.load(path)
-    texture.colorSpace = THREE.SRGBColorSpace
-    return texture
-  }
+  // 基本材质并设置颜色
+  // color: 0xff8844,
+  const material = new THREE.MeshBasicMaterial({map: texture})
 
   // 网格mesh对象
-  const cube = new THREE.Mesh(geometry, materials)
+  const cube = new THREE.Mesh(geometry, material)
 
   const fov = 75 // 视野范围
   const aspect = 2 // 画布宽高比 相机默认值300/150
@@ -43,6 +41,24 @@ function main() {
 
   // 将网格加入到场景中
   scene.add(cube)
+  // renderer.render(scene, camera)
+
+  // const cubes = [
+    // makeInstance(geometry, 0x44aa88, 0),
+    // makeInstance(geometry, 0x8844aa, -2),
+    // makeInstance(geometry, 0xaa8844, 2)
+  // ]
+
+  function makeInstance(geometry, color, x) {
+    const material = new THREE.MeshPhongMaterial({color})
+
+    const cube = new THREE.Mesh(geometry, material)
+    scene.add(cube)
+
+    cube.position.x = x
+
+    return cube
+  }
 
   function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement
@@ -66,6 +82,13 @@ function main() {
 
     cube.rotation.x = time
     cube.rotation.y = time
+
+    // cubes.forEach((cube, ndx) => {
+    //   const speed = 1 + ndx * .1
+    //   const rot = time * speed
+    //   cube.rotation.x = rot
+    //   cube.rotation.y = rot
+    // })
 
     renderer.render(scene, camera)
 
