@@ -4,7 +4,7 @@ import { GUI } from 'three/addons/libs/lil-gui.module.min.js'
 import { color } from 'three/tsl'
 
 class ColorGUIHelper {
-  constructor (object, prop) {
+  constructor(object, prop) {
     this.object = object
     this.prop = prop
   }
@@ -21,7 +21,7 @@ class ColorGUIHelper {
 
 function main() {
   const canvas = document.querySelector('#c')
-  const renderer = new THREE.WebGLRenderer({antialias: true, canvas})
+  const renderer = new THREE.WebGLRenderer({ antialias: true, canvas })
   const scene = new THREE.Scene() // 场景
   scene.background = new THREE.Color('black')
 
@@ -58,22 +58,22 @@ function main() {
 
 
   {
-    const cubeSize = 4;
-    const cubeGeo = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-    const cubeMat = new THREE.MeshPhongMaterial({color: '#8AC'});
-    const mesh = new THREE.Mesh(cubeGeo, cubeMat);
-    mesh.position.set(cubeSize + 1, cubeSize / 2, 0);
-    scene.add(mesh);
+    const cubeSize = 4
+    const cubeGeo = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize)
+    const cubeMat = new THREE.MeshPhongMaterial({ color: '#8AC' })
+    const mesh = new THREE.Mesh(cubeGeo, cubeMat)
+    mesh.position.set(cubeSize + 1, cubeSize / 2, 0)
+    scene.add(mesh)
   }
   {
-    const sphereRadius = 3;
-    const sphereWidthDivisions = 32;
-    const sphereHeightDivisions = 16;
-    const sphereGeo = new THREE.SphereGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
-    const sphereMat = new THREE.MeshPhongMaterial({color: '#CA8'});
-    const mesh = new THREE.Mesh(sphereGeo, sphereMat);
-    mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
-    scene.add(mesh);
+    const sphereRadius = 3
+    const sphereWidthDivisions = 32
+    const sphereHeightDivisions = 16
+    const sphereGeo = new THREE.SphereGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions)
+    const sphereMat = new THREE.MeshPhongMaterial({ color: '#CA8' })
+    const mesh = new THREE.Mesh(sphereGeo, sphereMat)
+    mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0)
+    scene.add(mesh)
   }
 
 
@@ -83,6 +83,7 @@ function main() {
   // const light = new THREE.AmbientLight(color, intensity)
   // scene.add(light)
 
+  // commit
   // // 半球光
   // const skyColor = 0xb1e1ff
   // const groundColor = 0xb97a20
@@ -134,14 +135,14 @@ function main() {
     const width = canvas.clientWidth
     const height = canvas.clientHeight
     const needResize = canvas.width !== width || canvas.height !== height
-    if(needResize) {
+    if (needResize) {
       renderer.setSize(width, height, false)
     }
     return needResize
   }
 
   function render() {
-    if(resizeRendererToDisplaySize(renderer)) {
+    if (resizeRendererToDisplaySize(renderer)) {
       const canvas = renderer.domElement
       camera.aspect = canvas.clientWidth / canvas.clientHeight
       camera.updateProjectionMatrix()
