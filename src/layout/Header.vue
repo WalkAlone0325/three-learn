@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted, reactive } from 'vue'
 import { config } from '@/constants'
 import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'
 
 const info = reactive({
   time: '--:--:--',
@@ -13,7 +14,7 @@ const updateInfo = () => {
   const now = dayjs()
   info.time = now.format('HH:mm:ss')
   info.date = now.format('YYYY/MM/DD')
-  info.week = now.format('dddd')
+  info.week = now.locale('zh-cn').format('dddd')
 }
 
 let interval: number | null = null
@@ -37,7 +38,7 @@ onUnmounted(() => {
     </div>
     <div class="header-left">
       <i class="fa-regular fa-envelope" />
-      <div class="message" content="【系统通知】"></div>
+      <div class="message" :content="`【系统通知】：${config.titleCn}`"></div>
     </div>
     <div class="header-right">
       <span>{{info.time}}</span>
