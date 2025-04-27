@@ -1,5 +1,4 @@
 import {
-  ref,
   shallowRef,
   nextTick,
   onUnmounted,
@@ -7,6 +6,7 @@ import {
   createVNode,
   render,
   h,
+  useTemplateRef,
 } from 'vue'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js'
@@ -33,7 +33,7 @@ const CONFIG = {
 } as const
 
 export function useThree() {
-  const container = ref<HTMLElement>() //挂载的容器
+  const container = useTemplateRef<HTMLElement>('container') //挂载的容器
   const scene = shallowRef<THREE.Scene>() //场景
   const camera = shallowRef<THREE.PerspectiveCamera>() //相机
   const renderer = shallowRef<THREE.WebGLRenderer>() //渲染器
@@ -43,7 +43,7 @@ export function useThree() {
   const outlinePass = shallowRef<OutlinePass>() //outlinePass
   const hexPass = shallowRef()
   const composers = new Map() //后期处理
-  const mixers: any = [] //动画混合器
+  const mixers: any[] = [] //动画混合器
   const clock = new THREE.Clock() //时钟
   const renderMixins = new Map() //渲染混合器
   const dracoLoader = new DRACOLoader() //draco加载器
