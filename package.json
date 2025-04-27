@@ -12,7 +12,9 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
+    "animate.css": "^4.1.1",
     "autofit.js": "^3.2.8",
+    "dayjs": "^1.11.13",
     "three": "^0.176.0",
     "vue": "^3.5.13"
   },
@@ -30,6 +32,7 @@
     "npm-run-all2": "^7.0.2",
     "sass": "^1.87.0",
     "typescript": "~5.8.0",
+    "unplugin-auto-import": "^19.1.2",
     "vite": "^6.2.4",
     "vite-plugin-vue-devtools": "^7.7.2",
     "vue-tsc": "^2.2.8"
