@@ -1,0 +1,7 @@
+export { default as Widget01 } from './Widget01.vue'
+export { default as Widget02 } from './Widget02.vue'
+export { default as Widget03 } from './Widget03.vue'
+export { default as Widget04 } from './Widget04.vue'
+export { default as Widget05 } from './Widget05.vue'
+export { default as Widget06 } from './Widget06.vue'
+export { default as Widget07 } from './Widget07.vue'
