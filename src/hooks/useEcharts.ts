@@ -1,4 +1,4 @@
-import type { EChartsOption, EChartsType } from 'echarts'
+import { onMounted, onUnmounted, shallowRef, useTemplateRef } from 'vue'
 import { isElement } from 'lodash-es'
 import * as echarts from 'echarts/core'
 import { BarChart, LineChart } from 'echarts/charts'
@@ -9,6 +9,7 @@ import {
 } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import { LabelLayout } from 'echarts/features'
+import type { EChartsOption } from 'echarts'
 
 echarts.use([
   TooltipComponent,
@@ -21,10 +22,8 @@ echarts.use([
 ])
 
 export function useEcharts() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let cache = {}
-  const container = useTemplateRef('container')
-  const chart = shallowRef<EChartsType>()
+  const container = useTemplateRef<HTMLElement>('container')
+  const chart = shallowRef()
 
   const resize = () => chart.value?.resize()
   const clear = () => chart.value?.clear()
@@ -41,7 +40,6 @@ export function useEcharts() {
   }
 
   const setOption = (option: EChartsOption) => {
-    cache = option
     if (!chart.value) bootstrap()
     chart.value?.setOption(option)
   }
@@ -62,5 +60,3 @@ export function useEcharts() {
     resize
   }
 }
-
-export default useEcharts

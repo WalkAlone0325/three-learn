@@ -20,7 +20,7 @@
 </template>
 <script setup lang="ts">
 import { Random } from 'mockjs'
-import Panel from "@/layout/Panel.vue";
+import Panel from '@/layout/Panel.vue'
 
 const source = [
   {

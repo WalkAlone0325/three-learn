@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { onMounted, nextTick } from 'vue'
 import Panel from '@/layout/Panel.vue'
 import { useEcharts } from '@/hooks'
-import type { EChartsOption } from "echarts";
+import type { EChartsOption } from 'echarts'
 
 const { container, echarts, setOption } = useEcharts()
 

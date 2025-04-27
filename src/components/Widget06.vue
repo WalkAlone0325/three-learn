@@ -18,8 +18,9 @@
   </Panel>
 </template>
 <script setup lang="ts">
-import Panel from "@/layout/Panel.vue";
-import dayjs from "dayjs";
+import { ref, onMounted } from 'vue'
+import Panel from '@/layout/Panel.vue'
+import dayjs from 'dayjs'
 
 const equipments = [
   '发动机',

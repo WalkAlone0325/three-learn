@@ -6,11 +6,12 @@
 <script setup lang="ts">
 import { nextTick, onMounted } from 'vue'
 import { useEcharts } from '@/hooks'
-import Panel from "@/layout/Panel.vue";
+import Panel from '@/layout/Panel.vue'
+import type { EChartsOption } from 'echarts'
 
 const { container, echarts, setOption } = useEcharts()
 
-const generateOptions = (sources: any[][]) => {
+const generateOptions = (sources: number[][]): EChartsOption => {
   return {
     legend: {
       show: true,
@@ -81,10 +82,8 @@ const generateOptions = (sources: any[][]) => {
         symbol: 'none',
         smooth: true,
         lineStyle: {
-          normal: {
-            width: 2,
-            color: 'rgba(0, 254, 169, 1)',
-          },
+          width: 2,
+          color: 'rgba(0, 254, 169, 1)',
         },
         itemStyle: {
           color: 'rgba(0, 254, 169, 0.5)',
@@ -109,10 +108,8 @@ const generateOptions = (sources: any[][]) => {
         symbol: 'none',
         smooth: true,
         lineStyle: {
-          normal: {
-            width: 2,
-            color: 'rgba(87, 153, 214, 1)',
-          },
+          width: 2,
+          color: 'rgba(87, 153, 214, 1)',
         },
         itemStyle: {
           color: 'rgba(87, 153, 214, 1)',

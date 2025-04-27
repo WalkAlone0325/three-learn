@@ -19,13 +19,21 @@
   </Panel>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, useTemplateRef } from 'vue'
 import { Random } from 'mockjs'
-import Panel from "@/layout/Panel.vue";
+import Panel from '@/layout/Panel.vue'
+
+interface Item {
+  id: string
+  name: string
+  status: number
+  angle: string
+  time: string
+}
 
 const directions = ['东', '东北', '北', '西北', '西', '西南', '南', '东南']
 
-const list = ref<any[]>(
+const list = ref<Item[]>(
   directions.map(() => {
     const angle = Random.integer(0, 360)
     return {
@@ -38,17 +46,17 @@ const list = ref<any[]>(
   })
 )
 
-const container = ref()
+const container = useTemplateRef<HTMLDivElement>('container')
 
-let timer: any
+let timer: number
 onMounted(() => {
   if (timer) window.clearInterval(timer)
   timer = setInterval(() => {
-    container.value.classList.add('scroll')
+    container.value!.classList.add('scroll')
     setTimeout(() => {
       if (!timer) return void 0
-      container.value.classList.remove('scroll')
-      list.value.push(list.value.shift())
+      container.value!.classList.remove('scroll')
+      list.value.push(list.value.shift()!)
     }, 2000)
   }, 3000)
 })

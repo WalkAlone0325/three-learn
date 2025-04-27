@@ -1,12 +1,11 @@
 <script setup lang="ts">
-
-import Header from "@/layout/Header.vue";
+import Header from '@/layout/Header.vue'
 
 interface PropsType {
   load: {
-    total: number
-    loaded: number
-    isLading: boolean
+    total?: number
+    loaded?: number
+    isLoading?: boolean
   }
 }
 defineProps<PropsType>()

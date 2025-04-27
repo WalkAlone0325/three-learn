@@ -17,4 +17,11 @@ export default defineConfigWithVueTs(
 
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
+  {
+    rules: {
+      'semi': ['error', 'never'],
+      'quotes': ['error', 'single'],
+      'vue/multi-word-component-names': 'off'
+    },
+  }
 )

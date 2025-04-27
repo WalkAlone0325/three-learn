@@ -6,11 +6,12 @@
 <script setup lang="ts">
 import { nextTick, onMounted } from 'vue'
 import { useEcharts } from '@/hooks'
-import Panel from "@/layout/Panel.vue";
+import Panel from '@/layout/Panel.vue'
+import type { EChartsOption } from 'echarts'
 
 const { container, echarts, setOption } = useEcharts()
 
-const generateOptions = () => ({
+const generateOptions = (): EChartsOption => ({
   legend: {
     show: true,
     right: 0,
@@ -61,8 +62,6 @@ const generateOptions = () => ({
   },
   series: [
     {
-      smooth: true,
-      showSymbol: false,
       data: Array.from({ length: 30 }).map(
         () => Math.floor(Math.random() * 90) + 10
       ),
