@@ -16,13 +16,13 @@ defineProps<PropsType>()
   <div class="layout">
     <Header />
     <div class="layout-main">
-      <div class="layout-left">
+      <div class="main-left">
         <slot name="left" />
       </div>
-      <div class="layout-right">
+      <div class="main-right">
         <slot name="right" />
       </div>
-      <div class="layout-center">
+      <div class="main-center">
         <slot/>
       </div>
     </div>
@@ -63,7 +63,7 @@ defineProps<PropsType>()
       z-index: 999;
       box-sizing: border-box;
       display: grid;
-      grid-template-rows: repeat(3, calc((100% - 40px) / 2));
+      grid-template-rows: repeat(3, calc((100% - 40px) / 3));
       grid-gap: 20px;
       width: 420px;
       height: calc(100% - 20px);

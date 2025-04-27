@@ -1,7 +1,20 @@
 <script setup lang="ts">
 import Layout from "@/layout/Layout.vue";
 import { Widget01, Widget02, Widget03, Widget04, Widget05, Widget06, Widget07 } from "@/components";
+// import { useTurbine } from '@/hooks'
+//
+// const {
+//   container,
+//   loading,
+//   current,
+//   eqDecomposeAnimation,
+//   eqComposeAnimation,
+//   startWarning,
+//   stopWarning,
+// } = useTurbine()
 
+const load = ref({})
+const current = ref(false)
 </script>
 
 <template>

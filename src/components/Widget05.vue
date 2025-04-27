@@ -4,8 +4,8 @@
       <div class="item-list" ref="container">
         <div
           class="item"
-          v-for="{ name, status, angle, time } in list"
-          :key="name"
+          v-for="{ id, name, status, angle, time } in list"
+          :key="id"
           :class="{ error: status === 0 }"
         >
           <div class="item-circle"></div>
@@ -29,6 +29,7 @@ const list = ref<any[]>(
   directions.map(() => {
     const angle = Random.integer(0, 360)
     return {
+      id: Random.uuid(),
       name: `向${Random.pick(directions)}偏航`,
       angle: `${angle}度`,
       status: angle < 180 ? 1 : 0,
