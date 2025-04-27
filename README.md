@@ -1,26 +1,39 @@
-# three-learn
-threejs
+# vue-project
 
-## 纹理 Texture
+This template should help get you started developing with Vue 3 in Vite.
 
-1. 创建纹理加载器 `const loader = new THREE.TextureLoader()`
-2. 使用 `loader` 传入图像，并将材质的 `map` 属性设置为该方法的返回值，而不是设置 `color` 属性
-   ```js
-   const texture = loader.load('resources/images/wall.jpg')
-   texture.colorSpace = THREE.SRGBColorSpace
+## Recommended IDE Setup
 
-   const material = new THREE.MeshBasicMaterial({map: texture})
-   ```
-3. x
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
-## 光照 Light
+## Type Support for `.vue` Imports in TS
 
-透视摄像机 PerspectiveCamera，它可以提供一个近大远小的3D视觉效果.
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
 
-通过四个属性来定义视锥。
-1. `near` 定义了视锥的前端
-2. `far` 定义了后端
-3. `fov` 是视野
-4. `aspect` 间接地定义了视锥前端和后端的宽度，实际上视锥的宽度是通过高度乘以 `aspect` 来得到的****
+## Customize configuration
 
-## test
+See [Vite Configuration Reference](https://vite.dev/config/).
+
+## Project Setup
+
+```sh
+pnpm install
+```
+
+### Compile and Hot-Reload for Development
+
+```sh
+pnpm dev
+```
+
+### Type-Check, Compile and Minify for Production
+
+```sh
+pnpm build
+```
+
+### Lint with [ESLint](https://eslint.org/)
+
+```sh
+pnpm lint
+```
