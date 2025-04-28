@@ -1,3 +1,3 @@
-export * from './useEcharts'
-export * from './useTurbine.ts'
-export * from './useThree.ts'
+export { useEcharts } from './useEcharts'
+export { useThree } from './useThree'
+export { useTurbine } from './useTurbine'

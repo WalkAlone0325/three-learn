@@ -1,25 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import Layout from '@/layout/Layout.vue'
 import { Widget01, Widget02, Widget03, Widget04, Widget05, Widget06, Widget07 } from '@/components'
-// import { useTurbine } from '@/hooks'
-//
-// const {
-//   container,
-//   loading,
-//   current,
-//   eqDecomposeAnimation,
-//   eqComposeAnimation,
-//   startWarning,
-//   stopWarning,
-// } = useTurbine()
+import { useTurbine } from '@/hooks'
 
-const load = ref({})
-const current = ref(false)
+const {
+  container,
+  load,
+  current,
+} = useTurbine()
+
+// const load = ref({})
+// const current = ref(false)
 </script>
 
 <template>
-  <Layout :load="load">
+  <Layout :load>
     <template #left>
       <Widget04 title="参数监测" />
       <Widget02 title="历史功率" />
@@ -31,7 +26,7 @@ const current = ref(false)
       <Widget01 title="故障对比" />
       <Widget05 title="偏航角度监测" />
     </template>
-    <template>
+    <template #default>
       <div style="width: 100%;height: 100%" ref="container"></div>
     </template>
   </Layout>

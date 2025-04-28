@@ -22,7 +22,7 @@ defineProps<PropsType>()
         <slot name="right" />
       </div>
       <div class="main-center">
-        <slot/>
+        <slot name="default" />
       </div>
     </div>
   </div>
