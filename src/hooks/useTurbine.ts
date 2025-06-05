@@ -1,4 +1,4 @@
-import { reactive, nextTick } from 'vue'
+import { ref, reactive, nextTick } from 'vue'
 import { useThree } from '@/hooks'
 import { forEach } from 'lodash-es'
 import * as THREE from 'three'
@@ -60,10 +60,12 @@ const CONFIG = {
 } as const
 
 export function useTurbine() {
-  const { container, scene, loadModel } = useThree()
+  const { container, scene, outlinePass, hexPass, loadModel, onModelPick, onModelHoverPick } = useThree()
+
+  const current = ref('')
 
   const models = {
-    equipment: {},
+    equipment: null as any,
     plane: {},
     skeleton: {},
   }
@@ -77,6 +79,26 @@ export function useTurbine() {
   const bootstrap = async () => {
     await loadModels() // 加载模型
     loadLights() // 加载灯光
+
+    onModelPick(models.equipment, (intersects) => {
+      if (intersects.length > 0) {
+        const obj = intersects[0].object
+        current.value = obj.name // 点击的模型名称
+        outlinePass.value!.selectedObjects = [obj]
+        console.log(outlinePass)
+      } else {
+        current.value = ''
+        outlinePass.value!.selectedObjects = []
+      }
+    })
+    onModelHoverPick(models.equipment, (intersects) => {
+      if (intersects.length > 0) {
+        const obj = intersects[0]['object']
+        hexPass.value!.selectedObjects = [obj]
+      } else {
+        hexPass.value!.selectedObjects = []
+      }
+    })
   }
 
   // 加载机架和设备模型
@@ -128,6 +150,6 @@ export function useTurbine() {
   return {
     container,
     load,
-    current: '',
+    current,
   }
 }

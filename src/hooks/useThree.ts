@@ -4,6 +4,10 @@ import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { type GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
 
 const config = {
   CAMERA_POSITION: [0.2, 2.8, 0.4], // 相机位置
@@ -17,7 +21,11 @@ export function useThree() {
   const camera = shallowRef<THREE.PerspectiveCamera>() // 相机
   const renderer = shallowRef<THREE.WebGLRenderer>() // 渲染器
   const cssRenderer = shallowRef<CSS2DRenderer>() // CSS渲染器
-  const ocontrol = shallowRef<OrbitControls>() // 轨道控制器
+  const ocontrol = shallowRef<OrbitControls>() // 轨道控制
+  const outlinePass = shallowRef<OutlinePass>() // 轮廓线
+  const hexPass = shallowRef()
+  const composers = new Map() //后期处理
+
   const dracoLoader = new DRACOLoader() // DRACO加载器
   dracoLoader.setDecoderPath(config.DECODER_PATH) // 设置DRACO加载器的路径
   dracoLoader.setDecoderConfig({ type: 'js' }) // 设置DRACO加载器的配置
@@ -31,6 +39,8 @@ export function useThree() {
     initLights()
     onAnimate()
     onWindowResize()
+    addHexEffect()
+    addOutlineEffect()
   }
 
   // 初始化场景
@@ -129,6 +139,116 @@ export function useThree() {
     })
   }
 
+  //添加outline效果
+  const addOutlineEffect = (config?: {
+    edgeStrength?: number
+    edgeGlow?: number
+    edgeThickness?: number
+    pulsePeriod?: number
+    usePatternTexture?: boolean
+    visibleEdgeColor?: string | number
+    hiddenEdgeColor?: string | number
+  }) => {
+    const composer = new EffectComposer(renderer.value!)
+    const renderPass = new RenderPass(scene.value!, camera.value!)
+    composer.addPass(renderPass)
+    outlinePass.value! = new OutlinePass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      scene.value!,
+      camera.value!
+    )
+    const deafultConfig = {
+      edgeStrength: 3,
+      edgeGlow: 0,
+      edgeThickness: 1,
+      pulsePeriod: 0,
+      usePatternTexture: false,
+      visibleEdgeColor: '#fff',
+      hiddenEdgeColor: '#fff',
+    }
+    const op = Object.assign({}, deafultConfig, config)
+
+    outlinePass.value.edgeStrength = op.edgeStrength
+    outlinePass.value.edgeGlow = op.edgeGlow
+    outlinePass.value.edgeThickness = op.edgeThickness
+    outlinePass.value.visibleEdgeColor.set(op.visibleEdgeColor)
+    outlinePass.value.hiddenEdgeColor.set(op.hiddenEdgeColor)
+    outlinePass.value.selectedObjects = []
+    composer.addPass(outlinePass.value)
+    const outputPass = new OutputPass()
+    composer.addPass(outputPass)
+    composers.set('outline', composer)
+  }
+
+  //添加outline效果
+  const addHexEffect = (color?: number | string) => {
+    let selected: any[] = []
+    hexPass.value = {
+      get selectedObjects() {
+        return selected
+      },
+      set selectedObjects(val) {
+        //先清空之前的
+        selected.forEach((mesh) => {
+          if (mesh.material) mesh.material.emissive.setHex(mesh.hex)
+        })
+        val.forEach((mesh) => {
+          mesh.material = mesh.material.clone()
+          mesh.hex = mesh.material.emissive.getHex()
+          mesh.material.emissive.setHex(color ?? 0x888888)
+        })
+        selected = [...val]
+      },
+    }
+  }
+
+  // 模型拾取
+  const onModelPick = (
+    object: THREE.Object3D,
+    cb: (intersects: THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>>[] | []) => void
+  ) => {
+    const handler = (event: MouseEvent) => {
+      const el = container.value!
+      const rect = el.getBoundingClientRect()
+      const mouse = new THREE.Vector2(
+        ((event.clientX - rect.left) / rect.width) * 2 - 1,
+        -((event.clientY - rect.top) / rect.height) * 2 + 1
+      )
+      const raycaster = new THREE.Raycaster()
+      raycaster.setFromCamera(mouse, camera.value!)
+      const intersects = raycaster.intersectObject(object, true)
+      cb(intersects)
+    }
+    document.addEventListener('click', handler)
+    onUnmounted(() => document.removeEventListener('click', handler))
+  }
+
+  // 模型悬浮拾取
+  const onModelHoverPick = (
+    object: THREE.Object3D,
+    cb: (
+      intersects:
+        | THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>>[]
+        | []
+    ) => void
+  ) => {
+    const handler = (event: MouseEvent) => {
+      const el = container.value as HTMLElement
+      const rect = el.getBoundingClientRect()
+      const mouse = new THREE.Vector2(
+        ((event.clientX - rect.left) / rect.width) * 2 - 1,
+        -((event.clientY - rect.top) / rect.height) * 2 + 1
+      )
+      const raycaster = new THREE.Raycaster()
+      raycaster.setFromCamera(mouse, camera.value!)
+      const intersects = raycaster.intersectObject(object, true)
+      cb(intersects)
+      // if (intersects.length <= 0) return void 0
+    }
+    document.addEventListener('mousemove', handler)
+    onUnmounted(() => document.removeEventListener('mousemove', handler))
+  }
+
   nextTick(() => {
     bootstrap()
   })
@@ -139,6 +259,12 @@ export function useThree() {
     camera,
     renderer,
     cssRenderer,
+    outlinePass,
+    hexPass,
     loadModel,
+    onModelPick,
+    onModelHoverPick,
+    addHexEffect,
+    addOutlineEffect
   }
 }
